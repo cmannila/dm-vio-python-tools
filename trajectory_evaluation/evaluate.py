@@ -114,11 +114,10 @@ def evaluate_with_config(pair, always_reevaluate=False):
     return evaluate_run(folder, dataset, setup['num_iter'], None, always_reevaluate)
 
 
-def evaluate_run(run_folder: Path, dataset: Dataset, num_iter: int, name=None, always_reevaluate=False) -> (
-        EvalResults, EvalResults):
+def evaluate_run(run_folder: Path, dataset: Dataset, num_iter: int, name=None, always_reevaluate=False) -> (EvalResults, EvalResults):
     """Evaluate all sequences and iterations of a run and save it to file (and return it).
     If the evaluation result has already been saved to file it will just load it.
-        returns
+        retu
 
     :param run_folder: Folder of the run which will be evaluated.
     :param dataset: Dataset to evaluate on.

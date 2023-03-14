@@ -1,4 +1,7 @@
 import argparse
+import glob
+import os
+import shutil
 import sys
 import subprocess
 from pathlib import Path
@@ -52,7 +55,7 @@ def main():
     parser.add_argument('--dmvio_args', type=str, default=None, help='Additional commandline arguments for DM-VIO.')
     parser.add_argument('--dmvio_settings', type=str, default=None,
                         help='Settings file to use (path is relative to DM-VIO-Source-Folder/configs)')
-    parser.add_argument('--withgui', default=False, action='store_true', help='Enable GUI in DM-VIO.')
+    parser.add_argument('--withgui', default=True, action='store_true', help='Enable GUI in DM-VIO.')
     parser.add_argument('--noimu', default=False, action='store_true', help='Turn off IMU.')
     parser.add_argument('--output', type=str, default='save',
                         help="What to do with console output, either 'save', 'null' (to delete) or console. For Slurm "
@@ -69,6 +72,8 @@ def main():
     parser.add_argument('--num_nodes', type=str, default=None, help='Num nodes to report to slurm.')
     parser.add_argument('--gdb', default=False, action='store_true',
                         help='Debug with gdb and stop as soon as error happens.')
+    parser.add_argument('--result', default=False, type=bool, help='Save the estimated trajectory in specific result folder')
+    parser.add_argument('--run', type=int, default=0, help='if multiple run, this is the sequence index. Defualt is 0')
     args = parser.parse_args()
 
     # Read config.
@@ -81,6 +86,7 @@ def main():
     noimu = args.noimu
     dataset = args.dataset
 
+    
     name = args.name
     results_name, time_used_for_name = build_results_name(name, realtime, dataset)
     temporary = args.temporary
@@ -181,6 +187,7 @@ def main():
     # ------------------------------ Run-Loop -> Run / create Slurm script. ------------------------------
     print("----------- STARTING EXECUTION! -----------")
     if not use_slurm:
+        print('not use slurm')
         execute_commands(commands, args.dryrun, setup_folder)
 
         # Transfer results to Uni (if not there already).
@@ -191,11 +198,23 @@ def main():
             print(full_rsync_command)
             subprocess.run(full_rsync_command, shell=True)
     else:
+        print('use slurm')
         execute_commands_slurm(commands, setup_folder, dataset_config['slurm_mem'], dataset_config['slurm_time'],
                                args.mail_type, args.num_tasks, args.num_nodes)
+        
+    # ------------------------------ SAVE FILES IN SPECIFIC FOLDER -------------------------------------------
+    if args.result:
+        file_path = os.path.join(f'{results_folder}/results/')
+        folders = dataset_config['folder_names']
+        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data/run_{args.run}/')
+        if not os.path.exists(copy_path):
+            os.makedirs(copy_path)
+        for file in glob.glob(os.path.join(file_path, '*.txt')):
+            shutil.copy(file, copy_path)
 
-
+        
 def execute_commands(commands, dryrun, setup_folder):
+    print(f'Execute commands {commands}')
     for command in commands:
         print('Working Dir: {}'.format(command.working_dir))
         print('Command: {}'.format(command.command))
