@@ -206,7 +206,8 @@ def main():
     if args.result:
         file_path = os.path.join(f'{results_folder}/results/')
         folders = dataset_config['folder_names']
-        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data/run_{args.run}/')
+        imu = "withoutimu" if noimu  else "withimu"
+        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data/{imu}/run_{args.run}/')
         if not os.path.exists(copy_path):
             os.makedirs(copy_path)
         for file in glob.glob(os.path.join(file_path, '*.txt')):
