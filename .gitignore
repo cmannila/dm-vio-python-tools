@@ -1,0 +1,11 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+
+# my files # 
+###########
+multiple_run_eval.py 
+compute_results.py 
+
