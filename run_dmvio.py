@@ -55,7 +55,7 @@ def main():
     parser.add_argument('--dmvio_args', type=str, default=None, help='Additional commandline arguments for DM-VIO.')
     parser.add_argument('--dmvio_settings', type=str, default=None,
                         help='Settings file to use (path is relative to DM-VIO-Source-Folder/configs)')
-    parser.add_argument('--withgui', default=True, action='store_true', help='Enable GUI in DM-VIO.')
+    parser.add_argument('--withgui', default=False, action='store_true', help='Enable GUI in DM-VIO.')
     parser.add_argument('--noimu', default=False, action='store_true', help='Turn off IMU.')
     parser.add_argument('--output', type=str, default='save',
                         help="What to do with console output, either 'save', 'null' (to delete) or console. For Slurm "
@@ -74,6 +74,7 @@ def main():
                         help='Debug with gdb and stop as soon as error happens.')
     parser.add_argument('--result', default=False, type=bool, help='Save the estimated trajectory in specific result folder')
     parser.add_argument('--run', type=int, default=0, help='if multiple run, this is the sequence index. Defualt is 0')
+    parser.add_argument('--sub_part', default="", type=str)
     args = parser.parse_args()
 
     # Read config.
@@ -207,7 +208,8 @@ def main():
         file_path = os.path.join(f'{results_folder}/results/')
         folders = dataset_config['folder_names']
         imu = "withoutimu" if noimu  else "withimu"
-        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data/{imu}/run_{args.run}/')
+        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data{args.sub_part}/{imu}/run_{args.run}/')
+        print(f'WILL BE SAVED IN {copy_path}')
         if not os.path.exists(copy_path):
             os.makedirs(copy_path)
         for file in glob.glob(os.path.join(file_path, '*.txt')):
