@@ -117,7 +117,7 @@ def evaluate_with_config(pair, always_reevaluate=False):
 def evaluate_run(run_folder: Path, dataset: Dataset, num_iter: int, name=None, always_reevaluate=False) -> (EvalResults, EvalResults):
     """Evaluate all sequences and iterations of a run and save it to file (and return it).
     If the evaluation result has already been saved to file it will just load it.
-        retu
+        return 
 
     :param run_folder: Folder of the run which will be evaluated.
     :param dataset: Dataset to evaluate on.
@@ -287,6 +287,7 @@ class GroundtruthDataForSequence:
         self.end_time = end_time
         self.times_file = times_file
         self.groundtruth_file = groundtruth_file
+        print(f'GROUNDTRUTH FILE {groundtruth_file}')
 
         # Preload GT data.
         self.groundtruth_data = associate.read_file_list(self.groundtruth_file)

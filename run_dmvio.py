@@ -87,6 +87,8 @@ def main():
     noimu = args.noimu
     dataset = args.dataset
 
+    with open("/home/cm2113/workspace/dm-vio-python-tools/photometric_error.txt", 'w') as fp:
+        pass
     
     name = args.name
     results_name, time_used_for_name = build_results_name(name, realtime, dataset)
@@ -214,6 +216,8 @@ def main():
             os.makedirs(copy_path)
         for file in glob.glob(os.path.join(file_path, '*.txt')):
             shutil.copy(file, copy_path)
+        if os.path.exists(f"{results_folder}/{dataset_config['res_prefix']}{folders[int(only_seq)]}_0/resultScaled.txt") and not noimu: 
+            shutil.copy(f"{results_folder}/{dataset_config['res_prefix']}{folders[int(only_seq)]}_0/resultScaled.txt", copy_path)
 
         
 def execute_commands(commands, dryrun, setup_folder):
@@ -325,7 +329,7 @@ def build_code(build_folder, build_type, cmake_command=None):
     if result_cmake.returncode != 0:
         print("CMake failed!")
         sys.exit(1)
-    result = subprocess.run('make -j8', shell=True, cwd=build_folder)
+    result = subprocess.run('make -j4', shell=True, cwd=build_folder)
     if result.returncode != 0:
         print("Compilation failed!")
         sys.exit(1)
