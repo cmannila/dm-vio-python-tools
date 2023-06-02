@@ -72,7 +72,7 @@ def main():
     parser.add_argument('--num_nodes', type=str, default=None, help='Num nodes to report to slurm.')
     parser.add_argument('--gdb', default=False, action='store_true',
                         help='Debug with gdb and stop as soon as error happens.')
-    parser.add_argument('--result', default=False, type=bool, help='Save the estimated trajectory in specific result folder')
+    parser.add_argument('--result', default=None, type=str, help='Save the estimated trajectory in specific result folder, end path without / (default=None)')
     parser.add_argument('--run', type=int, default=0, help='if multiple run, this is the sequence index. Defualt is 0')
     parser.add_argument('--sub_part', default="", type=str)
     args = parser.parse_args()
@@ -206,11 +206,11 @@ def main():
                                args.mail_type, args.num_tasks, args.num_nodes)
         
     # ------------------------------ SAVE FILES IN SPECIFIC FOLDER -------------------------------------------
-    if args.result:
+    if args.result is not None:
         file_path = os.path.join(f'{results_folder}/results/')
         folders = dataset_config['folder_names']
-        imu = "withoutimu" if noimu  else "withimu"
-        copy_path = os.path.join(f'/home/cm2113/workspace/results/{folders[int(only_seq)]}/dm_vio/data{args.sub_part}/{imu}/run_{args.run}/')
+
+        copy_path = os.path.join(f'{args.result}/')
         print(f'WILL BE SAVED IN {copy_path}')
         if not os.path.exists(copy_path):
             os.makedirs(copy_path)
