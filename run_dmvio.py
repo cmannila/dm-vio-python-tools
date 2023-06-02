@@ -87,7 +87,7 @@ def main():
     noimu = args.noimu
     dataset = args.dataset
 
-    with open("/home/cm2113/workspace/dm-vio-python-tools/photometric_error.txt", 'w') as fp:
+    with open("photometric_error.txt", 'w') as fp:
         pass
     
     name = args.name
