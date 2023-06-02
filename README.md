@@ -1,23 +1,16 @@
 # Thesis relevance
 
 The custom code is to enable reiterations and add resulting files to a specific file structure: 
-
-Result folder
-|
-|-dataset 
-  | 
-  |- dm_vio 
-      |
-      |- data 
-         | 
-         |- ev: specific folder name: eg. without_pc
-           | 
-           |-  sensor configuration 
-           	| 
-           	| - run_X 
-           	    | 
-           	    |- <resultsfile>.txt
-           	    |- photometricerror.txt 
+```
+└── Results folder 
+|    └── Dataset sequence 
+|        └── dm_vio
+|           └── ev: specific folder name: eg. without_pc
+|                └── sensor_config
+|                    └── run_X
+|                        ├── <resultfile>.txt
+|                        └── photometricerror.txt
+```
 
 
 # Python tools for DM-VIO: Delayed Marginalization Visual-Inertial Odometry
