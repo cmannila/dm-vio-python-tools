@@ -1,17 +1,21 @@
 # Thesis relevance
 
-The custom code is to enable reiterations and add resulting files to a specific file structure: 
+The custom code is to enable reiterations and add resulting files to a specific file structure. Since there are two grountruths depending on IMU and camera frame the groundtruths are expeceted in two folders. See the following structure: 
 ```
 └── Results folder 
 |    └── Dataset sequence 
 |        └── dm_vio
-|           └── ev: specific folder name: eg. without_pc
-|                └── sensor_config
-|                    └── run_X
-|                        ├── <resultfile>.txt
-|                        └── photometricerror.txt
+|        |   └── ev: specific folder name: eg. without_pc
+|        |        └── sensor_config
+|        |            └── run_X
+|        |                ├── <resultfile>.txt
+|        |                └── photometricerror.txt
+|        └── Groundtruth files 
+|            └── withimu 
+|		 └── groundtruth.txt 
+|	     └── withoutimu 
+|	         └── groundtruth.txt  
 ```
-
 
 # Python tools for DM-VIO: Delayed Marginalization Visual-Inertial Odometry
 
